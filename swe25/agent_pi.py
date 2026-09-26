@@ -104,6 +104,16 @@ def parse_transcript(text: str) -> dict:
 TOUCH_EVERY_S = 30
 
 
+def _heartbeat(path: Path, stop: threading.Event, every: float = TOUCH_EVERY_S) -> None:
+    """Refresh the transcript's mtime while the pass runs, including long silent tool commands, so a
+    watcher (the dashboard) can tell a live pass from a finished one by the file alone."""
+    while not stop.wait(every):
+        try:
+            os.utime(path)
+        except OSError:
+            pass
+
+
 def _live_read(proc, out_path: Path, label: str, t0: float) -> None:
     """Tee Pi's stdout JSONL into the transcript while printing a short live feed.
 
@@ -205,6 +215,9 @@ def run_pass(inst: dict, arm: Arm, tag: str, wd: Path, *, cap: int, resume: bool
     wdog = threading.Timer(deadline, _kill)
     wdog.daemon = True
     wdog.start()
+    transcript.touch()
+    beat_stop = threading.Event()
+    threading.Thread(target=_heartbeat, args=(transcript, beat_stop), daemon=True).start()
     try:
         _live_read(proc, transcript, label, t0)
         proc.wait(timeout=deadline)
@@ -218,6 +231,7 @@ def run_pass(inst: dict, arm: Arm, tag: str, wd: Path, *, cap: int, resume: bool
         row.error = f"agent: {type(e).__name__}: {e}"
     finally:
         wdog.cancel()
+        beat_stop.set()
         docker.safe(["docker", "rm", "-f", cname])
     if fired.is_set() and not row.error:
         row.error = "agent: deadline watchdog fired (daemon wedged / silent container)"

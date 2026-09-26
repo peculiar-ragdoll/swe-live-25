@@ -201,3 +201,20 @@ def test_live_read_keeps_transcript_mtime_fresh_during_streaming(tmp_path, monke
     out = tmp_path / "t.jsonl"
     A._live_read(proc, out, "lbl", 0.0)
     assert out.read_text() == "" and len(touched) >= 2 and all(os.fspath(p) == os.fspath(out) for p in touched)
+
+
+def test_heartbeat_touches_until_stopped(tmp_path):
+    import threading
+    import time as _t
+    p = tmp_path / "t.jsonl"
+    p.write_text("")
+    old = _t.time() - 3600
+    import os
+    os.utime(p, (old, old))
+    stop = threading.Event()
+    th = threading.Thread(target=A._heartbeat, args=(p, stop, 0.05), daemon=True)
+    th.start()
+    _t.sleep(0.2)
+    stop.set()
+    th.join(1)
+    assert not th.is_alive() and _t.time() - p.stat().st_mtime < 5
