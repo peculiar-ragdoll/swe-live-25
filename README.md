@@ -1,6 +1,6 @@
 # swe-live-25
 
-Run the **canonical 25-instance SWE-bench-Live slice** against your own model on a Mac, and see
+Run a **25-instance SWE-bench-Live slice** against your own models on a Mac, and see
 where it lands next to the models we have already benchmarked.
 
 A coding agent ([Pi](https://www.npmjs.com/package/@earendil-works/pi-coding-agent) 0.80.3) works
