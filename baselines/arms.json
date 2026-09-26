@@ -1,0 +1,179 @@
+{
+ "dirk-qwen3.8-27b": {
+  "label": "Dirk-Qwen3.8-27B (MLX 6-bit)",
+  "agent": "pi",
+  "weights": "Qwen3.8-27B + Sharp chat template",
+  "quant": "MLX flat 6-bit (21.2 GiB)",
+  "backend": "oMLX (MLX)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "qwen3.8-27b-stock-medium": {
+  "label": "Qwen3.8-27B stock, medium effort (MLX 6-bit)",
+  "agent": "pi",
+  "weights": "Qwen3.8-27B, stock chat template at medium effort",
+  "quant": "MLX flat 6-bit (21.2 GiB)",
+  "backend": "oMLX (MLX)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "nail-qwen3.6-35b-a3b": {
+  "label": "Nail-35B-A3B (MLX 4-bit)",
+  "agent": "pi",
+  "weights": "Qwen3.6-35B-A3B MoE + froggeric-derived chat template",
+  "quant": "MLX 4-bit",
+  "backend": "oMLX (MLX)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "tiel": {
+  "label": "Tiel-Coder-35B-A3B (Q4_K_M)",
+  "agent": "pi",
+  "weights": "Ornith-1.5-35B-A3B + coding imatrix + Sharp chat template",
+  "quant": "UD-Q4_K_M",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "cybertiel": {
+  "label": "CyberTiel-Coder-35B-A3B (Q4_K_M)",
+  "agent": "pi",
+  "weights": "abliterated Ornith-1.5-35B-A3B + cyber imatrix + Sharp chat template",
+  "quant": "UD-Q4_K_M",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "no",
+  "notes": "4 of 92 rows ran after the patch; treat as unpatched; seed 1 ran on a degraded box (Rust build + swap, ~53 vs ~79 tok/s): its verdicts count, its timings are excluded",
+  "timing_invalid_seeds": [
+   1
+  ]
+ },
+ "cybertiel-fc": {
+  "label": "CyberTiel-Coder-35B-A3B, full-corpus imatrix",
+  "agent": "pi",
+  "weights": "as cybertiel, imatrix from the full 14.1M-token corpus",
+  "quant": "UD-Q4_K_M",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "yes",
+  "notes": "imatrix-depth A/B against cybertiel"
+ },
+ "ornith": {
+  "label": "Ornith-1.5-35B-A3B (vendor Q4_K_M)",
+  "agent": "pi",
+  "weights": "Ornith-1.5-35B-A3B as shipped by its vendor",
+  "quant": "Q4_K_M",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "kat-coder": {
+  "label": "KAT-Coder-V2.5 (APEX I-Quality GGUF)",
+  "agent": "pi",
+  "weights": "KAT-Coder-V2.5 (Qwen3.6-35B-A3B coding finetune), shipped chat template",
+  "quant": "APEX I-Quality",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "lynx": {
+  "label": "Lynx (KAT-Coder-V2.5 + Sharp template)",
+  "agent": "pi",
+  "weights": "KAT-Coder-V2.5 APEX I-Quality weights + Sharp v22.3.1 chat template",
+  "quant": "APEX I-Quality",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "stock-35b-a3b": {
+  "label": "Qwen3.6-35B-A3B (Unsloth UD-Q4_K_XL)",
+  "agent": "pi",
+  "weights": "Qwen3.6-35B-A3B, shipped chat template",
+  "quant": "UD-Q4_K_XL",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "no",
+  "notes": ""
+ },
+ "swift-q4-vendor-medium": {
+  "label": "Swift-Qwen3.8-27B (vendor Q4_K_M, stock template, medium)",
+  "agent": "pi",
+  "weights": "Swift-Qwen3.8-27B, stock chat template at medium effort",
+  "quant": "Q4_K_M",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "yes",
+  "notes": ""
+ },
+ "swift-q4-sharp": {
+  "label": "Swift-Qwen3.8-27B (vendor Q4_K_M + Sharp template)",
+  "agent": "pi",
+  "weights": "Swift-Qwen3.8-27B + Sharp v22.5.0 chat template",
+  "quant": "Q4_K_M",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "yes",
+  "notes": ""
+ },
+ "dirk-q4": {
+  "label": "Dirk-Qwen3.8-27B (UD-Q4_K_XL)",
+  "agent": "pi",
+  "weights": "Qwen3.8-27B (Unsloth UD-Q4_K_XL weights) + Sharp v22.5.0 chat template",
+  "quant": "UD-Q4_K_XL",
+  "backend": "llama.cpp (GGUF)",
+  "bash_patch": "yes",
+  "notes": ""
+ },
+ "opus-4.6-medium": {
+  "label": "Claude Opus 4.6, medium effort",
+  "agent": "claude",
+  "weights": "claude-opus-4-6 via Claude Code",
+  "quant": "n/a",
+  "backend": "Anthropic API",
+  "bash_patch": "n/a",
+  "notes": "single 1800 s pass, no resume"
+ },
+ "sonnet-5-medium": {
+  "label": "Claude Sonnet 5, medium effort",
+  "agent": "claude",
+  "weights": "claude-sonnet-5 via Claude Code",
+  "quant": "n/a",
+  "backend": "Anthropic API",
+  "bash_patch": "n/a",
+  "notes": "single 1800 s pass, no resume"
+ },
+ "spark-x25-4b-q6": {
+  "label": "Sharp-Spark-X2.5-4B (UD-Q6_K_XL)",
+  "agent": "pi",
+  "weights": "Spark-X2.5-4B + cyber imatrix + Sharp-Spark chat template",
+  "quant": "UD-Q6_K_XL",
+  "backend": "llama.cpp (GGUF), a build with the spark2_5 architecture",
+  "bash_patch": "yes",
+  "subset": "winnable17",
+  "notes": "small-model floor probe, run on the 17-task winnable subset only"
+ },
+ "spark-x25-4b-q8-stock": {
+  "label": "Spark-X2.5-4B (vendor Q8_0)",
+  "agent": "pi",
+  "weights": "Spark-X2.5-4B official GGUF, stock chat template",
+  "quant": "Q8_0",
+  "backend": "llama.cpp (GGUF), a build with the spark2_5 architecture",
+  "bash_patch": "yes",
+  "subset": "winnable17",
+  "notes": "upstream baseline for the Sharp-Spark arm, same 17 tasks"
+ },
+ "haiku-4.5-high": {
+  "label": "Claude Haiku 4.5, high effort",
+  "agent": "claude",
+  "weights": "claude-haiku-4-5 via Claude Code",
+  "quant": "n/a",
+  "backend": "Anthropic API",
+  "bash_patch": "n/a",
+  "subset": "winnable17",
+  "notes": "single 1800 s pass, no resume; ran 19 tasks x 3 seeds, scored on the 17-task winnable subset they cover"
+ },
+ "opus-5-medium": {
+  "label": "Claude Opus 5, medium effort",
+  "agent": "claude",
+  "weights": "claude-opus-5 via Claude Code",
+  "quant": "n/a",
+  "backend": "Anthropic API",
+  "bash_patch": "n/a",
+  "notes": "single 1800 s pass, no resume"
+ }
+}

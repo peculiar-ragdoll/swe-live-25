@@ -1,0 +1,11 @@
+{"type":"session","id":"run"}
+{"type":"agent_start"}
+{"type":"message_end","message":{"role":"assistant","usage":{"input":1000,"output":200,"cacheRead":0}}}
+{"type":"tool_execution_start","toolName":"bash","args":{"command":"ls"}}
+{"type":"tool_execution_end","isError":false}
+{"type":"message_end","message":{"role":"assistant","usage":{"input":1500,"output":300,"cacheRead":1000}}}
+{"type":"tool_execution_start","toolName":"edit","args":{"path":"a.go"}}
+{"type":"tool_execution_end","isError":true}
+{"type":"message_end","message":{"role":"user"}}
+not json
+{"type":"agent_end"}

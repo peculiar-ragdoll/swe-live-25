@@ -1,0 +1,5 @@
+{"type":"system","subtype":"init"}
+{"type":"assistant","message":{"usage":{"output_tokens":120}}}
+{"type":"user","message":{"content":[{"type":"tool_result"}]}}
+{"type":"assistant","message":{"usage":{"output_tokens":80}}}
+{"type":"result","subtype":"success"}

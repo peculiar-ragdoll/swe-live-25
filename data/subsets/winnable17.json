@@ -1,0 +1,23 @@
+{
+ "name": "winnable17",
+ "description": "The 17 tasks that at least one weaker model (one solving 10 or fewer of the 25) has solved. For small models: skips the 8 tasks no weak model has solved, so a run spends its hours where a solve is plausible. Frozen from the results as of 2026-09-13.",
+ "instances": [
+  "QwenLM__qwen-code-3310",
+  "RooCodeInc__Roo-Code-12135",
+  "amir20__dozzle-4612",
+  "chimurai__http-proxy-middleware-1163",
+  "floci-io__floci-153",
+  "karmada-io__karmada-7365",
+  "kepano__defuddle-243",
+  "kubernetes-sigs__controller-runtime-3494",
+  "mikro-orm__mikro-orm-7464",
+  "mnfst__manifest-1635",
+  "mui__mui-x-22062",
+  "nodejs__undici-5000",
+  "open-telemetry__opentelemetry-go-8133",
+  "openai__codex-plugin-cc-83",
+  "reactjs__react-rails-1418",
+  "sqlc-dev__sqlc-4383",
+  "wxt-dev__wxt-2267"
+ ]
+}

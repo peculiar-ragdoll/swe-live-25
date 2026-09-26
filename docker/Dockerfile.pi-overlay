@@ -1,0 +1,9 @@
+# Adds node + Pi onto a SWE-bench-Live instance image, so the agent runs inside the instance's
+# prepared environment (repo at /testbed, dependencies installed). node comes from the Debian
+# bookworm toolchain image, which is compatible with the instance images.
+ARG BASE=busybox
+FROM ${BASE}
+COPY --from=swe25-pi-toolchain:0.80.3 /usr/local/bin/node /usr/local/bin/node
+COPY --from=swe25-pi-toolchain:0.80.3 /usr/local/lib/node_modules/@earendil-works /usr/local/lib/node_modules/@earendil-works
+RUN ln -sf /usr/local/lib/node_modules/@earendil-works/pi-coding-agent/dist/cli.js /usr/local/bin/pi \
+ && chmod +x /usr/local/bin/pi

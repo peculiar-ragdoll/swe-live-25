@@ -1,0 +1,30 @@
+# Copy to arms.yaml and edit. Each arm is one model configuration; its results go to
+# results/<arm>.jsonl. Run with:  swe25 run --arm <name> --seeds 3
+
+work_dir: ~/swe25-work        # agent transcripts, patches and grade logs (can grow to tens of GB)
+# results_dir: results        # where results/<arm>.jsonl lives (default ./results)
+# min_free_gb: 20             # refuse to pull an image when the Docker VM has less free disk
+
+arms:
+  # A local model behind any OpenAI-compatible server (llama.cpp, oMLX, LM Studio, Ollama).
+  my-model-q4:
+    agent: pi
+    endpoint: http://127.0.0.1:8080/v1   # rewritten to host.docker.internal inside the containers
+    model: my-model                      # model name the server expects
+    # api_key_env: MY_SERVER_KEY         # env var holding a bearer token, if your server needs one
+    context: 262144                      # advertised to the agent; MUST equal the server's context
+    sampling: {temp: 0.6, top_p: 0.95, top_k: 20, min_p: 0.0}
+    # The agent sends no sampling parameters, so the server's settings are what the model samples
+    # at. This block records them in every result row, and `swe25 serve-llamacpp` launches
+    # llama-server with exactly these values:
+    # serve:
+    #   gguf: /path/to/model.gguf
+    #   bin: llama-server                # or a path to your own build
+    meta: {backend: llama.cpp, quant: Q4_K_M}
+
+  # A Claude model through Claude Code. Needs CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`)
+  # or ANTHROPIC_API_KEY in the environment.
+  opus-5-medium:
+    agent: claude
+    model: claude-opus-5
+    effort: medium

@@ -1,0 +1,26 @@
+[project]
+name = "swe-live-25"
+version = "0.1.0"
+description = "Run the canonical 25-instance SWE-bench-Live slice against your own model on a Mac"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["pyyaml>=6"]
+
+[project.scripts]
+swe25 = "swe25.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["swe25"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["docker: needs Docker + network (run with -m docker)"]
+addopts = "-m 'not docker'"

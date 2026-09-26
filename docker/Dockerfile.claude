@@ -1,0 +1,28 @@
+# Adds Claude Code onto a SWE-bench-Live instance image.
+#
+# JS instance images ship their own node + npm (any libc); the Go images do not. node + npm are
+# staged from the toolchain image (glibc/bookworm) under /opt/tc and used ONLY when the image has
+# no working node: clobbering a musl image's node with a glibc binary would make it unexecutable.
+ARG BASE=busybox
+FROM ${BASE}
+ARG CLAUDE_CODE_VERSION=latest
+COPY --from=swe25-pi-toolchain:0.80.3 /usr/local/bin/node /opt/tc/bin/node
+COPY --from=swe25-pi-toolchain:0.80.3 /usr/local/lib/node_modules/npm /opt/tc/lib/node_modules/npm
+RUN set -e; \
+    if command -v node >/dev/null 2>&1 && node -v >/dev/null 2>&1; then \
+      echo "using image node $(node -v) at $(command -v node)"; \
+    else \
+      echo "image node missing/broken -> installing toolchain node into /usr/local"; \
+      cp /opt/tc/bin/node /usr/local/bin/node; \
+      rm -rf /usr/local/lib/node_modules/npm; \
+      mkdir -p /usr/local/lib/node_modules; \
+      cp -r /opt/tc/lib/node_modules/npm /usr/local/lib/node_modules/npm; \
+      ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm; \
+      ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx; \
+    fi; \
+    node -v; npm -v; \
+    npm install -g "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}"; \
+    claude --version
+# Claude Code refuses to bypass permissions as root; the agent script runs it as a fresh non-root
+# user. Trust the repo for git.
+RUN git config --system --add safe.directory '*' 2>/dev/null || true

@@ -1,0 +1,5 @@
+# Minimal amd64 Pi toolchain: the source of the node + Pi binaries that are overlaid onto each
+# amd64 SWE-bench-Live instance image. Pi is pinned: the baselines were produced with 0.80.3 and
+# the bash-tool patch (pi_bash_0.80.3.js) is built against exactly this version.
+FROM --platform=linux/amd64 node:24-bookworm-slim
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent@0.80.3

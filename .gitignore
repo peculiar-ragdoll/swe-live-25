@@ -1,0 +1,8 @@
+results/
+.venv/
+__pycache__/
+*.egg-info/
+arms.yaml
+.pytest_cache/
+.ruff_cache/
+.hygiene-forbid
