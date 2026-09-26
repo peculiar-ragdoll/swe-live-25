@@ -1,0 +1,18 @@
+{
+ "name": "small-solved12",
+ "description": "The 12 tasks solved at least once (any seed) by Spark-X2.5-4B Q8_0, Sharp-Spark-X2.5-4B UD-Q6_K_XL or Claude Haiku 4.5 high on the winnable17 subset.",
+ "instances": [
+  "QwenLM__qwen-code-3310",
+  "RooCodeInc__Roo-Code-12135",
+  "chimurai__http-proxy-middleware-1163",
+  "karmada-io__karmada-7365",
+  "kepano__defuddle-243",
+  "kubernetes-sigs__controller-runtime-3494",
+  "mui__mui-x-22062",
+  "nodejs__undici-5000",
+  "open-telemetry__opentelemetry-go-8133",
+  "openai__codex-plugin-cc-83",
+  "sqlc-dev__sqlc-4383",
+  "wxt-dev__wxt-2267"
+ ]
+}

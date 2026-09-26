@@ -46,6 +46,11 @@ class RunSummary:
     open: int
 
 
+def _log(*args) -> None:
+    """Progress lines flush at once, so a log redirected to a file (nohup) shows each pass as it ends."""
+    print(*args, flush=True)
+
+
 def _default_agent(inst, arm, tag, wd, *, cap, resume, sample):
     if arm.agent == "claude":
         from swe25 import agent_claude
@@ -90,12 +95,12 @@ def _host_ram_gb() -> float | None:
 class Runner:
     def __init__(self, settings: Settings, arm: Arm, ids: list[str], seeds: int, *,
                  agent_pass: Callable | None = None, grader: Callable | None = None, images=None,
-                 log: Callable = print, subset: str = "canonical25"):
+                 log: Callable | None = None, subset: str = "canonical25"):
         self.s, self.arm, self.ids, self.seeds, self.subset = settings, arm, ids, seeds, subset
         self.agent_pass = agent_pass or _default_agent
         self.grader = grader or _default_grader
         self.images = images or docker.ImageSession(settings.min_free_gb)
-        self.log = log
+        self.log = log or _log
         self.path = settings.results_dir / f"{arm.name}.jsonl"
         self._lock = threading.Lock()
         self._abandoned = False

@@ -213,3 +213,21 @@ def test_rows_record_the_subset_and_a_conflicting_subset_is_refused(tmp_path):
     assert read_rows([out])[0]["subset"] == "winnable17"
     with pytest.raises(RN.SubsetConflict, match="winnable17"):
         make(tmp_path, PI, [], subset="canonical25")[0].run()
+
+
+def test_default_log_flushes_so_redirected_output_is_live(tmp_path, monkeypatch):
+    flushed = []
+
+    class Out:
+        def write(self, s):
+            pass
+
+        def flush(self):
+            flushed.append(True)
+
+    monkeypatch.setattr("sys.stdout", Out())
+    from swe25.config import Settings
+    r = RN.Runner(Settings(work_dir=tmp_path, results_dir=tmp_path, min_free_gb=20), PI, IDS, 1,
+                  agent_pass=FakeAgent([]), grader=grader(), images=FakeImages())
+    r.log("hello")
+    assert flushed
