@@ -206,8 +206,10 @@ models get up to 4 h. Keep that asymmetry in mind when comparing.
   prefill_tokens, output_tokens, total_generated, prefill_cache_hit, f2p_pass, f2p_total, p2p_pass,
   p2p_total, error, ts, agent, pass_kind, cum_wall_s, sampling, harness_version`.
 - `results/<arm>.runconfig.<ts>.json`: the arm (no secrets), versions, caps and host, per launch.
-- `work_dir/<arm>/<instance>__s<seed>/`: transcripts, the model's patch and grade logs. This can
-  grow to tens of GB; delete it freely once a cell is settled, because scores live in the jsonl.
+- `work_dir/<arm>/<instance>__s<seed>/`: transcripts, the model's patch and grade logs. Transcripts
+  keep every event except Pi's per-token `message_update` snapshots (the finished reply is in
+  `message_end`), so they stay small; the agent's Go/npm build caches can still add several hundred MB
+  per task. Delete it freely once a cell is settled, because scores live in the jsonl.
 
 ## Sharing traces
 

@@ -101,12 +101,29 @@ def parse_transcript(text: str) -> dict:
             "prefill_cache_hit": round(cached / pf, 4) if pf else None}
 
 
+TOUCH_EVERY_S = 30
+
+
 def _live_read(proc, out_path: Path, label: str, t0: float) -> None:
-    """Tee Pi's stdout JSONL into the transcript while printing a short live feed."""
+    """Tee Pi's stdout JSONL into the transcript while printing a short live feed.
+
+    `message_update` events are not written: each re-sends the whole reply-in-progress on every
+    streamed chunk (~99.7% of the bytes), and the finished reply is in the following `message_end`.
+    While a reply streams, the transcript's mtime is still refreshed so watchers can see the pass is live.
+    """
     turns = tools = 0
+    last_touch = time.monotonic()
     with out_path.open("w") as fh:
         for line in proc.stdout:
+            if line.startswith('{"type":"message_update"'):
+                now = time.monotonic()
+                if now - last_touch >= TOUCH_EVERY_S:
+                    fh.flush()
+                    os.utime(out_path)
+                    last_touch = now
+                continue
             fh.write(line)
+            last_touch = time.monotonic()
             try:
                 o = json.loads(line)
             except Exception:

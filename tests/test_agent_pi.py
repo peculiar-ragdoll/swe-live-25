@@ -179,3 +179,25 @@ def test_api_key_passed_by_name_not_in_argv(tmp_path, fake_docker, monkeypatch):
     A.run_pass(INST, arm(api_key_env="MYKEY"), "t", tmp_path, cap=1200, resume=False, sample=0)
     assert "sekrit" not in " ".join(FakePopen.cmd) and "SWE25_API_KEY" in FakePopen.cmd
     assert seen["env"]["SWE25_API_KEY"] == "sekrit"
+
+
+def test_transcript_omits_streaming_snapshots_but_keeps_everything_else(tmp_path, fake_docker):
+    row = A.run_pass(INST, arm(), "t", tmp_path, cap=1200, resume=False, sample=0)
+    text = next((tmp_path / "transcripts").glob("*.jsonl")).read_text()
+    assert '"message_update"' not in text
+    assert text.count('"message_end"') == 3 and text.count('"tool_execution_start"') == 2
+    assert row.turns == 2 and row.output_tokens == 500          # metrics unaffected
+
+
+def test_live_read_keeps_transcript_mtime_fresh_during_streaming(tmp_path, monkeypatch):
+    import io
+    import os
+    touched = []
+    monkeypatch.setattr(A.os, "utime", lambda p, *a, **k: touched.append(p))
+    clock = iter(range(0, 1000, 20))                           # 20 s between streamed chunks
+    monkeypatch.setattr(A.time, "monotonic", lambda: next(clock))
+    lines = ['{"type":"message_update","message":{"content":"x"}}\n'] * 5
+    proc = type("P", (), {"stdout": io.StringIO("".join(lines))})()
+    out = tmp_path / "t.jsonl"
+    A._live_read(proc, out, "lbl", 0.0)
+    assert out.read_text() == "" and len(touched) >= 2 and all(os.fspath(p) == os.fspath(out) for p in touched)

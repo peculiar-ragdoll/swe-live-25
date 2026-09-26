@@ -1,5 +1,7 @@
 {"type":"session","id":"run"}
 {"type":"agent_start"}
+{"type":"message_update","message":{"role":"assistant","content":"partial reply so far"}}
+{"type":"message_update","message":{"role":"assistant","content":"partial reply so far"}}
 {"type":"message_end","message":{"role":"assistant","usage":{"input":1000,"output":200,"cacheRead":0}}}
 {"type":"tool_execution_start","toolName":"bash","args":{"command":"ls"}}
 {"type":"tool_execution_end","isError":false}
